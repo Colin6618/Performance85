@@ -1,55 +1,57 @@
 const db = require("../models/index.js");
-const User = db.userModel.User;
+const Performance = db.performanceModel.Performance;
 
-// Create and Save a new User
+// TODO: performance input should be validated
+
+// Create and Save a new Performance
 exports.create = (req, res) => {
-    // Validate request
-    if (!req.body.username) {
+    // Simple Validation request 
+    if (!req.body.title || !req.body.body || !req.body.assignBy || !req.body.subject) {
         res.status(400).send({
             message: "Content can not be empty!"
         });
         return;
     }
-    // Create a User
-    const user = new User({
-        name: req.body.name,
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password, //TODO: Should be encriped.
-        bio: req.body.bio,
-        group: req.body.group || 'Employee', // TODO: Should be enhanced.
+    // Create a Performance
+    const performance = new Performance({
+        title: req.body.title,
+        body: req.body.body,
+        assignBy: req.body.assignBy,
+        subject: req.body.subject,
+        invitees: req.body.invitees || []
     });
 
-    // Save User in the database
-    user
-        .save(user)
+    // Save 
+    performance
+        .save(performance)
         .then(data => {
             res.send(data);
         })
         .catch(err => {
             res.status(500).send({
-                message: err.message || "Some error occurred while creating the User."
+                message: err.message || "Some error occurred while creating the Performance."
             });
         });
 };
 
-// Retrieve all Users from the database.
+
+// Retrieve all 
 exports.findAll = (req, res) => {
-    const group = req.query.group;
-    const condition = group ? {
-        group: {
-            $regex: new RegExp(group),
+    const subject = req.query.subject;
+    const condition = subject ? {
+        subject: {
+            $regex: new RegExp(subject),
             $options: "i"
         }
     } : {};
 
-    User.find(condition)
+    Performance.find(condition)
         .then(data => {
             res.send(data);
         })
         .catch(err => {
             res.status(500).send({
-                message: err.message || "Some error occurred while retrieving users."
+                message: err.message || "Some error occurred while retrieving performances."
             });
         });
 };
@@ -58,11 +60,11 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
-    User.findById(id)
+    Performance.findById(id)
         .then(data => {
             if (!data)
                 res.status(404).send({
-                    message: "Not found User with id " + id
+                    message: "Not found with id " + id
                 });
             else res.send(data);
         })
@@ -70,11 +72,11 @@ exports.findOne = (req, res) => {
             res
                 .status(500)
                 .send({
-                    message: "Error retrieving User with id=" + id
+                    message: "Error retrieving with id=" + id
                 });
         });
 };
-// Update a User by the id in the request
+// Update by the id in the request
 exports.update = (req, res) => {
     if (!req.body) {
         return res.status(400).send({
@@ -84,59 +86,59 @@ exports.update = (req, res) => {
 
     const id = req.params.id;
 
-    User.findByIdAndUpdate(id, req.body, {
+    Performance.findByIdAndUpdate(id, req.body, {
             useFindAndModify: false
         })
         .then(data => {
             if (!data) {
                 res.status(404).send({
-                    message: `Failed update User with id=${id}. User was not found!`
+                    message: `Failed update User with id=${id}. Performance was not found!`
                 });
             } else res.send({
-                message: "User was updated successfully."
+                message: "Performance was updated successfully."
             });
         })
         .catch(err => {
             res.status(500).send({
-                message: "Internal error while updating User with id=" + id
+                message: "Internal error while updating with id=" + id
             });
         });
 };
 
-// Delete a User with the specified id in the request
+// Delete a Performance with the specified id in the request
 exports.delete = (req, res) => {
     const id = req.params.id;
 
-    User.findByIdAndRemove(id)
+    Performance.findByIdAndRemove(id)
         .then(data => {
             if (!data) {
                 res.status(404).send({
-                    message: `Cannot delete User with id=${id}. User was not found!`
+                    message: `Cannot delete Performance with id=${id}. Performance was not found!`
                 });
             } else {
                 res.send({
-                    message: "User was deleted successfully!"
+                    message: "Performance was deleted successfully!"
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Internal error, Could not delete User with id=" + id
+                message: "Internal error, Could not delete Performance with id=" + id
             });
         });
 };
 
-// Delete all Users from the database.
+// Delete all Performances from the database.
 exports.deleteAll = (req, res) => {
-    User.deleteMany({})
+    Performance.deleteMany({})
         .then(data => {
             res.send({
-                message: `${data.deletedCount} Users were deleted successfully!`
+                message: `${data.deletedCount} data were deleted successfully!`
             });
         })
         .catch(err => {
             res.status(500).send({
-                message: err.message || "Some error occurred while removing all users."
+                message: err.message || "Some error occurred while removing all performances."
             });
         });
 };

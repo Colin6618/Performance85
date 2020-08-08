@@ -40,6 +40,7 @@ app.get("/", (req, res) => {
 });
 
 require("./app/routes/user.routes")(app);
+require("./app/routes/performance.routes")(app);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

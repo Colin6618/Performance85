@@ -4,6 +4,9 @@
   "description": "Performance85",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js",
+    "debug": "node --nolazy server.js",
+    "changelog": "auto-changelog --template changelog.hbs -p -u --commit-limit false",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

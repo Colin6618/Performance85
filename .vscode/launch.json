@@ -7,11 +7,14 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "启动程序",
+            "name": "启动程序Debug",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/server.js"
+            "program": "${workspaceFolder}/server.js",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run-script", "debug"]
         }
     ]
 }
