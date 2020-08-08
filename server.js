@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const httpResponder = require("./app/middlewares/httpResponder");
 require('dotenv').config()
 const app = express();
 
@@ -9,7 +10,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
+app.use(httpResponder);
 // content-type - application/json
 app.use(bodyParser.json());
 
@@ -23,7 +24,8 @@ const db = require("./app/models");
 db.mongoose
   .connect(db.url, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false 
   })
   .then(() => {
     console.log("Connected to the database!");
@@ -41,6 +43,7 @@ app.get("/", (req, res) => {
 
 require("./app/routes/user.routes")(app);
 require("./app/routes/performance.routes")(app);
+require("./app/routes/comment.routes")(app);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

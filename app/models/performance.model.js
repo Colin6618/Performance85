@@ -1,13 +1,6 @@
 const mongoose = require("mongoose");
 const { UserInfoSchema } = require("./user.model");
-
-/* - title
-- body
-- date_opened
-- isopen
-- subject: [] （main rol）
-- invitees: [] (Give feedback)
-- comments: commentSchema */
+const { CommentSchema } = require("./comment.model");
 
 const schema = mongoose.Schema(
   {
@@ -46,7 +39,7 @@ const schema = mongoose.Schema(
     ],
     comments: [
       {
-        type: String,
+        type: CommentSchema,
       },
     ],
   },

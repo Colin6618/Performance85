@@ -14,3 +14,34 @@
 * Submit feedback 
 * ==> Comments field in Performance modle
 
+
+### DB
+
+#### User Schema
+- name
+- username
+- email
+- password
+- bio
+- avatarurl del
+- date_joined
+
+#### Performance Review Schema
+- title
+- body
+- date_opened
+- isopen
+- assignBy: user
+- subject:（main role）
+- invitees: [] (Give feedback)
+- comments: []
+
+#### commentSchema
+- body
+- date
+- author : user
+
+### cutting demand
+#### Not for now
+- validation on data model, params and user input.
+- user session and JWT before necessary.
