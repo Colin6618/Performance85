@@ -1,0 +1,95 @@
+# Handy Tests 
+
+
+GET http://localhost:8080/
+
+###
+GET http://localhost:8080/api/users
+
+###
+
+GET http://localhost:8080/api/performances
+
+
+###
+
+GET http://localhost:8080/api/performances/5f2e6d1e2cb28174579f278d/comments/
+
+###
+
+POST http://localhost:8080/api/user/check-auth
+
+###
+
+POST http://localhost:8080/api/user/login
+Content-Type: application/json
+
+{
+"email": "userlogin1@gmail.com",
+"password": "userpass"
+}
+
+###
+
+POST http://localhost:8080/api/performances
+Content-Type: application/json
+
+{
+"title": "Performance title 2",
+"body": "Performance body 2",
+"assignBy": {
+	"name": "admin name",
+    "username": "admin username",
+    "id": "5f2d11d36c4edc625fce89e0"
+},
+"subject": {
+    "name": "PP Tester1",
+    "username": "employee1",
+    "id": "5f2d12a56c4edc625fce89e1"
+},
+"invitees": [{	
+  "name": "PPname3",
+  "username": "employee3",
+  "id": "5f2e66803fe5d23698153c4a"
+}]
+}
+
+###
+
+POST http://localhost:8080/api/users/
+Content-Type: application/json
+
+{
+  "username": "usernmae2"
+}
+
+
+###
+
+# DELETE http://localhost:8080/api/performances/
+
+
+###
+
+PATCH http://localhost:8080/api/performances/5f2e6d1e2cb28174579f278d/comments
+Content-Type: application/json
+
+{
+	"body": "{{$guid}} Black lives matter ",
+	"author": {
+			"name": "PP Tester1",
+			"username": "employee1",
+			"id": "5f2d12a56c4edc625fce89e1"
+	}
+}
+
+###
+
+PUT http://localhost:8080/api/performances/
+Content-Type: application/json
+
+{
+    "firstname":"James",
+    "lastname":"Smith"
+}
+

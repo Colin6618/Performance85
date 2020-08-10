@@ -21,5 +21,9 @@ module.exports = app => {
   // Create a new User
   router.delete("/", users.deleteAll);
 
+  // mock login
+  router.post("/login", users.login);
+
   app.use('/api/users', router);
+  app.use('/api/user', router);
 };

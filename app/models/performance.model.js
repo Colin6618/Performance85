@@ -51,6 +51,8 @@ const schema = mongoose.Schema(
 schema.method("toJSON", function () {
   const { __v, _id, ...object } = this.toObject();
   object.id = _id;
+  object.author = object.assignBy;
+
   return object;
 });
 

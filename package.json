@@ -4,22 +4,39 @@
   "description": "Performance85",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "debug": "node --nolazy server.js",
-    "changelog": "auto-changelog --template changelog.hbs -p -u --commit-limit false",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "cross-env NODE_ENV=production node start.js",
+    "dev": "cross-env NODE_ENV=development node start.js",
+    "test": "cross-env NODE_ENV=test jest --forceExit --testTimeout=20000",
+    "jest": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles --testTimeout=20000",
+    "debug": "cross-env NODE_ENV=development node --nolazy start.js",
+    "changelog": "auto-changelog --template changelog.hbs -p -u --commit-limit false"
   },
   "keywords": [],
   "author": "https://github.com/Colin6618",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
+    "dotenv-flow": "^3.2.0",
     "express": "^4.17.1",
+    "express-jwt": "^6.0.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.27"
   },
   "devDependencies": {
-    "auto-changelog": "^2.2.0"
+    "auto-changelog": "^2.2.0",
+    "chai": "^4.2.0",
+    "cross-env": "^7.0.2",
+    "jest": "^26.2.2",
+    "mocha": "^8.1.1",
+    "supertest": "^4.0.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   }
 }
