@@ -148,7 +148,7 @@ exports.login = async (req, res) => {
     return res.unprocessable({ error: "email can not be empty!" });
   }
   const user = await User.findOne({ email: req.body.email });
-  if (!user) return res.notFound({ error: 'Email does not exists' });
+  if (!user) return res.notFound({ error: "Email does not exists" });
 
   const secret = process.env.SECRET;
 
@@ -158,15 +158,13 @@ exports.login = async (req, res) => {
       name: user.name,
       username: user.username,
       email: user.email,
-      group: user.group
+      group: user.group,
     },
     secret,
     {
-      expiresIn: "2h", //秒到期时间
+      expiresIn: "2h",
     }
   );
-
-  //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoxMjMsImlhdCI6MTQ5MTQ3NTQyNCwiZXhwIjoxNDkxNDc1NDg0fQ.hYNC4qFAyhZClmPaLixfN137d41R2CFk1xPlfLK10JU
 
   res
     .status(200)
@@ -180,7 +178,11 @@ exports.login = async (req, res) => {
         email: user.email,
         avatarUrl: "",
         id: user.id,
-        group: user.group
+        group: user.group,
       },
     });
+};
+
+exports.checkAuth = async (req, res) => {
+  res.ok({ data: req.user });
 };
