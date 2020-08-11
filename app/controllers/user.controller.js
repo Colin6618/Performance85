@@ -176,6 +176,9 @@ exports.login = async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) return res.notFound({ error: "Email does not exists" });
 
+  if(user.password !== req.body.password) {
+      return  res.notFound({ error: "Password does not correct" });
+  }
   const secret = process.env.SECRET;
 
   //generate token
