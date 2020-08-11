@@ -1,3 +1,27 @@
+<br />
+<p align="center">
+    <img src="./public/PF85-logo.png" alt="PF85" width="180" >
+  <h3 align="center">PF85 | help review your performance, with on bonus!</h3>
+</p>
+
+#### Performance85 Server side codebase
+
+### Manual
+
+- Create a new `.env` in the root.
+- Copy the content from `.env.EXAMPLE`
+- Or use my clustor env file [gist](https://bit.ly/3gQzmWE), Please do not use for other purposes. :)
+- `npm run start` to start.
+- Client side code base is below.
+
+### Client-Side Repo
+Performance85 client code repo. 
+FrontEnd [Link](https://github.com/Colin6618/Performance85-client)
+
+------ 
+Made by [Colin Han](https://github.com/Colin6618) with the buttock pain.
+
+
 
 ## Database Design
 ### Admin
@@ -44,4 +68,4 @@
 ### cutting demand
 #### Not for now
 - validation on data model, params and user input.
-- user session and JWT before necessary.
+- <del>user session and JWT before necessary.</del>

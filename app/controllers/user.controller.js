@@ -86,20 +86,6 @@ exports.findOne = (req, res) => {
         error: "Error retrieving User with id=" + id,
       });
     });
-
-  //   User.findById(id)
-  //     .then((data) => {
-  //       if (!data)
-  //         res.status(404).send({
-  //           error: "Not found User with id " + id,
-  //         });
-  //       else res.send({ data });
-  //     })
-  //     .catch((err) => {
-  //       res.status(500).send({
-  //         error: "Error retrieving User with id=" + id,
-  //       });
-  //     });
 };
 // Update a User by the id in the request
 exports.update = (req, res) => {
