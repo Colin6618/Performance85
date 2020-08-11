@@ -1,28 +1,44 @@
 const db = require("../models/index.js");
 const Performance = db.performanceModel.Performance;
+const User = db.userModel.User;
 
 // TODO: performance input should be validated
 
 // Create and Save a new Performance
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   // Simple Validation request
   if (
     !req.body.title ||
     !req.body.body ||
-    !req.body.assignBy ||
+    !req.user.username ||
     !req.body.subject
   ) {
     res.status(400).send({
-      error: "Content can not be empty!",
+      error: "title, subject and content can not be empty!",
     });
     return;
   }
+
+  const assignBy = {
+    username: req.user.username,
+    name: req.user.name,
+    _id: req.user.id,
+  };
+  const subject = {};
+
+  const user = await User.findOne({ username: req.body.subject });
+  if (!user) return res.notFound({ error: "subject username does not exists" });
+  subject.username = user.username;
+  subject.user = user.name;
+  subject._id = user.id;
+
+
   // Create a Performance
   const performance = new Performance({
     title: req.body.title,
     body: req.body.body,
-    assignBy: req.body.assignBy,
-    subject: req.body.subject,
+    assignBy: assignBy,
+    subject: subject,
     invitees: req.body.invitees || [],
   });
 

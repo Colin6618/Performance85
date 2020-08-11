@@ -5,17 +5,21 @@ const User = db.userModel.User;
 // Create and Save a new User
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.username) {
+  if (!req.body.email || !req.body.name || !req.body.password) {
     res.status(400).send({
       error: "Content can not be empty!",
     });
     return;
   }
+
+  const name = req.body.name;
+  const email = req.body.email;
+  const username = email.slice(0, email.indexOf("@"));
   // Create a User
   const user = new User({
-    name: req.body.name,
-    username: req.body.username,
-    email: req.body.email,
+    name: name,
+    username: username,
+    email: email,
     password: req.body.password, //TODO: Should be encriped.
     bio: req.body.bio,
     group: req.body.group || "Employee", // TODO: Should be enhanced.
@@ -25,7 +29,7 @@ exports.create = (req, res) => {
   user
     .save(user)
     .then((data) => {
-      res.send(data);
+      res.send({ data });
     })
     .catch((err) => {
       res.status(500).send({
@@ -48,7 +52,7 @@ exports.findAll = (req, res) => {
 
   User.find(condition)
     .then((data) => {
-      res.send(data);
+      res.send({ data });
     })
     .catch((err) => {
       res.status(500).send({
@@ -57,23 +61,45 @@ exports.findAll = (req, res) => {
     });
 };
 
+const ObjectId = require("mongoose").Types.ObjectId;
 // Find a single User with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
+  const $or = [{ username: id }];
 
-  User.findById(id)
+  // Does it look like an ObjectId? If so, convert it to one and
+  // add it to the list of OR operands.
+  if (ObjectId.isValid(id)) {
+    $or.push({ _id: ObjectId(id) });
+  }
+
+  User.findOne({ "$or": $or })
     .then((data) => {
       if (!data)
         res.status(404).send({
           error: "Not found User with id " + id,
         });
-      else res.send(data);
+      else res.send({ data });
     })
     .catch((err) => {
       res.status(500).send({
         error: "Error retrieving User with id=" + id,
       });
     });
+
+  //   User.findById(id)
+  //     .then((data) => {
+  //       if (!data)
+  //         res.status(404).send({
+  //           error: "Not found User with id " + id,
+  //         });
+  //       else res.send({ data });
+  //     })
+  //     .catch((err) => {
+  //       res.status(500).send({
+  //         error: "Error retrieving User with id=" + id,
+  //       });
+  //     });
 };
 // Update a User by the id in the request
 exports.update = (req, res) => {
@@ -155,6 +181,7 @@ exports.login = async (req, res) => {
   //generate token
   const token = jwt.sign(
     {
+      id: user.id,
       name: user.name,
       username: user.username,
       email: user.email,
@@ -181,6 +208,10 @@ exports.login = async (req, res) => {
         group: user.group,
       },
     });
+};
+
+exports.logout = async (req, res) => {
+  res.status(200).clearCookie("jwt").send({ message: "logged out" });
 };
 
 exports.checkAuth = async (req, res) => {

@@ -32,7 +32,7 @@ exports.getComments = async (req, res) => {
  * @type RequestHandler
  */
 exports.createComment = async (req, res) => {
-  if (!req.body.body || !req.body.author)
+  if (!req.body.body || !req.user.username)
     return res.unprocessable({ message: "Content can not be empty!" });
 
   try {
@@ -44,9 +44,9 @@ exports.createComment = async (req, res) => {
 
     // TODO: User info should be in session or get by token.
     let authorDetails = {
-      username: req.body.author.username,
-      name: req.body.author.name,
-      _id: req.body.author.id,
+      username: req.user.username,
+      name: req.user.name,
+      _id: req.user.id,
     };
 
     pfmc.comments.push({

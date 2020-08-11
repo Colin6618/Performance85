@@ -13,4 +13,5 @@ module.exports = (app) => {
   router.delete("/:performanceId/comments/:comment_id", comments.deleteComment);
 
   app.use("/api/performances", router);
+
 };

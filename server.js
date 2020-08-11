@@ -40,6 +40,7 @@ app.use(
       "/api/user/login",
       "/api/users/login",
       "/api/users/signup",
+      "/api/user/signup"
     ], 
   })
 );

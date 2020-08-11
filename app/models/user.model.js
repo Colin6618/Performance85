@@ -21,7 +21,7 @@ const schema = mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    minlength: 2,
+    minlength: 6,
     maxlength: 100,
     unique: true
   },
@@ -66,7 +66,7 @@ schema.method("toJSON", function () {
 const UserInfoSchema = mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: false,
     trim: true,
     minlength: 6,
     maxlength: 100

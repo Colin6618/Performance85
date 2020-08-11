@@ -22,4 +22,5 @@ module.exports = app => {
   router.delete("/", performances.deleteAll);
 
   app.use('/api/performances', router);
+
 };
