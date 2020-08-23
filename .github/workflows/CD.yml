@@ -51,7 +51,8 @@ jobs:
           script: |
             cd ${{ secrets.REMOTE_TARGET }}
             npm ci
-            npm run start
+            npm run stop:pf85
+            npm run start:pf85
       - name: Create tarball
         run: tar -C app -czvf app.tar.gz .
       - name: Upload tarball

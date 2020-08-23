@@ -4,6 +4,8 @@
   "description": "Performance85",
   "main": "server.js",
   "scripts": {
+    "stop:pf85": "pm2 delete pf85",
+    "start:pf85": "cross-env NODE_ENV=production pm2 start start.js --name pf85",
     "start": "cross-env NODE_ENV=production node start.js",
     "dev": "cross-env NODE_ENV=development node start.js",
     "test": "cross-env NODE_ENV=test jest --forceExit --testTimeout=20000",
