@@ -1,0 +1,61 @@
+name: PF85Server-Deploy
+on:
+  push:
+    branches:
+      - master
+      - 'staging/**'
+      - develop
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.14.1]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Unit Tests
+        run: |
+          echo "Tested"
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@v2.1.4
+        env:
+            SSH_PRIVATE_KEY: ${{ secrets.KEY }}
+            ARGS: "-rltgoDzvO"
+            SOURCE: "app/"
+            REMOTE_HOST: ${{ secrets.HOST }}
+            REMOTE_USER: ${{ secrets.USERNAME }}
+            TARGET: ${{ secrets.REMOTE_TARGET }}/app/
+      - name: copy files via ssh key
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.KEY }}
+          source: "package.json,package-lock.json"
+          target: ${{ secrets.REMOTE_TARGET }}
+      - name: Dep Install && Start
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd ${{ secrets.REMOTE_TARGET }}
+            npm ci
+            npm run start
+      - name: Create tarball
+        run: tar -C app -czvf app.tar.gz .
+      - name: Upload tarball
+        uses: actions/upload-artifact@v1
+        with:
+          name: apppackage.tgz
+          path: app.tar.gz
