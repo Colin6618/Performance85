@@ -1,7 +1,7 @@
 <br />
 <p align="center">
     <img src="./public/PF85-logo.png" alt="PF85" width="180" >
-  <h3 align="center">PF85 | An open source, self-host forum system. Based on Node.js </h3>
+  <h3 align="center">PF85 | An open source, self-host forum system.</h3>
 </p>
 
 #### Performance85 Server side codebase
